@@ -1,32 +1,54 @@
 package cn.team.onlinedisk.dao;
 
+import cn.team.onlinedisk.domain.User;
+import cn.team.onlinedisk.domain.UserFileInfo;
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.ResultSet;
+import java.util.List;
 
 public interface UserFileInfoDao {
 
     /**
-     * 查询 user 表返回一个Result集合。
+     * 查询 用户的文件表 表返回一个Result集合。
      *
-     * @param sql : 查询语句。
+     * @param user : 用户对象.
+     * @param fileName : 文件名，如果为"all" 则查询所有。
      * @return: java.sql.ResultSet
      */
-    ResultSet query(String sql);
+    ResultSet query(@NotNull User user, String fileName);
 
     /**
      * 执行增删该查sql。
      *
-     * @param sql:  增删该查语句。
+     * @param usi:  用户文件信息的封装。
      * @return: int : 返回影响的条数。
      */
-    int update(String sql);
+    int addNewFile(UserFileInfo usi);
+
+    /**
+     * 删除用户文件；
+     *
+     * @param list:  用于存储的待删除的列表
+     * @return: void
+     */
+    void deleteFile(List<UserFileInfo> list);
 
     /**
      * 分页 查询 user 表返回一个Result集合。
      *
-     * @param sql:
+     * @param user:
      * @param startIndex: 开始索引
      * @param number:  每页的条目数量
      * @return: java.sql.ResultSet
      */
-    ResultSet query(String sql, int startIndex, int number);
+    ResultSet queryForPage(User user, int startIndex, int number);
+
+    /**
+     * 根据用户类创建一张table
+     *
+     * @param user:
+     * @return: boolean
+     */
+    boolean creatTable(User user);
 }

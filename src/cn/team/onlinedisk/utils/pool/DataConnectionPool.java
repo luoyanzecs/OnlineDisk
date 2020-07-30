@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Properties;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -28,6 +29,8 @@ public class DataConnectionPool  {
     static private String password;
     final private static LinkedList<Connection> connectionsPool = new LinkedList<>();
     static int currentSize;
+
+    final private static Object lock = new Object();
 
     /**
      * 数据库连接池扩容量
@@ -72,7 +75,9 @@ public class DataConnectionPool  {
      * @return: void
      */
     public static synchronized void connectionRecycle(@NotNull Connection con) {
-           connectionsPool.add(con);
+        synchronized (lock){
+            connectionsPool.add(con);
+        }
     }
 
 
@@ -82,25 +87,27 @@ public class DataConnectionPool  {
      * @return: java.sql.Connection
      */
     public static synchronized Connection getConnection() {
-        if(connectionsPool.size() == 0){
+        synchronized (lock){
+            if(connectionsPool.size() == 0){
 
-            if(currentSize >= maxPoolSize){
-                System.out.println("数据库连接池达到最大值");
-                return null;
-            }else {
-                for (int i = 0; i < step; i++) {
-                    Connection connection = null;
-                    try {
-                        connection = DriverManager.getConnection(url, username, password);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+                if(currentSize >= maxPoolSize){
+                    System.out.println("数据库连接池达到最大值");
+                    return null;
+                }else {
+                    for (int i = 0; i < step; i++) {
+                        Connection connection = null;
+                        try {
+                            connection = DriverManager.getConnection(url, username, password);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        connectionsPool.add(connection);
+                        currentSize++;
                     }
-                    connectionsPool.add(connection);
-                    currentSize++;
                 }
             }
+            return connectionsPool.removeLast();
         }
-        return connectionsPool.removeLast();
     }
 
 }

@@ -1,5 +1,7 @@
 package cn.team.onlinedisk.dao;
 
+import cn.team.onlinedisk.domain.User;
+
 import java.sql.ResultSet;
 
 public interface UserDao {
@@ -16,24 +18,31 @@ public interface UserDao {
      * 验证是否存在用户。
      *
      * @param name : 用户的姓名
-     * @return: java.lang.Boolean
+     * @return: boolean
      */
-    Boolean isExist(String name);
+    boolean isExist(String name);
 
     /**
      * 验证用户信息是否正确。
      *
-     * @param name:
-     * @param password:
-     * @return: java.lang.Boolean
+     * @param user
+     * @return: boolean
      */
-    Boolean isInfoRight(String name , String password);
+    boolean isInfoRight(User user);
 
     /**
      * 执行增删该查sql。
      *
-     * @param sql:  增删该查语句。
+     * @param user : 待添加的user
      * @return: int : 返回影响的条数。
      */
-    int update(String sql);
+    int update(User user);
+
+    /**
+     * 添加新用户到数据库内
+     *
+     * @param user
+     * @return: boolean
+     */
+    boolean addNewUser(User user);
 }

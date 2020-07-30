@@ -1,5 +1,10 @@
 package cn.team.onlinedisk.service.impl;
 
+import cn.team.onlinedisk.domain.UserFileInfo;
+import cn.team.onlinedisk.service.UserFileInfoService;
+
+import java.io.File;
+
 /**
  * @ClassName UserFileInfoServiceImpl
  * @Description TODO
@@ -9,5 +14,9 @@ package cn.team.onlinedisk.service.impl;
  */
 
 
-public class UserFileInfoServiceImpl {
+public class UserFileInfoServiceImpl implements UserFileInfoService {
+    @Override
+    public Boolean saveFile(UserFileInfo usi, File file) {
+        return null;
+    }
 }

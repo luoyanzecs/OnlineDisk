@@ -111,7 +111,20 @@ public class ConnectionPoolUtils {
             }
         }
     }
-
-
+    /**
+     * 事物回滚
+     *
+     * @param conn:
+     * @return: void
+     */
+    public static void rollback(Connection conn){
+        if (conn != null){
+            try {
+                conn.rollback();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }

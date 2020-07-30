@@ -1,5 +1,8 @@
 package cn.team.onlinedisk.service.impl;
 
+import cn.team.onlinedisk.domain.User;
+import cn.team.onlinedisk.service.UserService;
+
 /**
  * @ClassName UserServiceImpl
  * @Description TODO
@@ -9,5 +12,19 @@ package cn.team.onlinedisk.service.impl;
  */
 
 
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService {
+    @Override
+    public Boolean register(User user) {
+        return null;
+    }
+
+    @Override
+    public Boolean login(User user) {
+        return null;
+    }
+
+    @Override
+    public Boolean modify(User user) {
+        return null;
+    }
 }

@@ -1,16 +1,16 @@
 package cn.team.onlinedisk.web.listener;
 
+import cn.team.onlinedisk.utils.cache.CacheUtils;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import javax.servlet.http.HttpSessionAttributeListener;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-import javax.servlet.http.HttpSessionBindingEvent;
 
 @WebListener
 public class Listener implements ServletContextListener{
 
+    private boolean flagUser = true;
+    private boolean flagFile = true;
     // Public constructor is required by servlet spec
     public Listener() {
     }
@@ -31,11 +31,40 @@ public class Listener implements ServletContextListener{
             Class.forName("cn.team.onlinedisk.utils.pool.DataConnectionPool");
             System.out.println("数据库连接池初始化成功");
 
-            Class.forName("cn.team.onlinedisk.utils.cache.Cache");
+            Class.forName("cn.team.onlinedisk.utils.cache.CacheUtils");
             System.out.println("缓存初始化成功");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        /**
+         *
+         * 创建线程来监督缓存的大小;
+         */
+
+        new Thread(()->{
+            System.out.println("文件缓存监督线程启动");
+            while(flagFile){
+                try {
+                    Thread.sleep(1000*60*5);
+                    CacheUtils.timingCheckFile();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+        new Thread(()->{
+            System.out.println("用户缓存监督线程启动");
+            while(flagUser){
+                try {
+                    Thread.sleep(1000*60*5);
+                    CacheUtils.timingCheckUser();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public void contextDestroyed(ServletContextEvent sce) {
@@ -43,6 +72,9 @@ public class Listener implements ServletContextListener{
          (the Web application) is undeployed or 
          Application Server shuts down.
       */
+
+      this.flagUser =false;
+      this.flagFile =false;
     }
 
 }
