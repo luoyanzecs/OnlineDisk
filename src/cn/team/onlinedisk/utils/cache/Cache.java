@@ -1,4 +1,6 @@
-package cn.team.onlinedisk.domain;
+package cn.team.onlinedisk.utils.cache;
+
+import cn.team.onlinedisk.domain.User;
 
 import java.util.LinkedHashMap;
 import java.util.List;

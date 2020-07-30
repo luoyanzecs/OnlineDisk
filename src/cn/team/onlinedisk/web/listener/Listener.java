@@ -23,6 +23,19 @@ public class Listener implements ServletContextListener{
          initialized(when the Web application is deployed). 
          You can initialize servlet context related data here.
       */
+
+      /**
+       * 初始化数据库连接池和缓存cache.
+       */
+        try {
+            Class.forName("cn.team.onlinedisk.utils.pool.DataConnectionPool");
+            System.out.println("数据库连接池初始化成功");
+
+            Class.forName("cn.team.onlinedisk.utils.cache.Cache");
+            System.out.println("缓存初始化成功");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void contextDestroyed(ServletContextEvent sce) {

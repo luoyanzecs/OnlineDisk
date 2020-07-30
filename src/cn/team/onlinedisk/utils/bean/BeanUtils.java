@@ -19,7 +19,7 @@ import java.util.*;
 
 public class BeanUtils<K>{
     /**
-     * @description {@code cls}为要封装的目的对象，应该和{@code k}保持一致
+     *  {@code cls}为要封装的目的对象，应该和{@code k}保持一致
      */
     private Class cls;
 
