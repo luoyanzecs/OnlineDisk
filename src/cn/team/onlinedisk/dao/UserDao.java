@@ -20,7 +20,7 @@ public interface UserDao {
      * @param name : 用户的姓名
      * @return: boolean
      */
-    boolean isExist(String name);
+    boolean isExistUser(String name);
 
     /**
      * 验证用户信息是否正确。

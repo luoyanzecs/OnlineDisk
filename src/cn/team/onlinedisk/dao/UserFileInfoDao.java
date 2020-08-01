@@ -27,6 +27,14 @@ public interface UserFileInfoDao {
     int addNewFile(UserFileInfo usi);
 
     /**
+     * 统计文件数目
+     *
+     * @param user:
+     * @return: int
+     */
+    int countFile(User user);
+
+    /**
      * 删除用户文件；
      *
      * @param list:  用于存储的待删除的列表

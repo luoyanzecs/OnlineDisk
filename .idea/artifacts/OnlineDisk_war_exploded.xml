@@ -2,12 +2,17 @@
   <artifact type="exploded-war" name="OnlineDisk:war exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/OnlineDisk_war_exploded</output-path>
     <root id="root">
-      <element id="javaee-facet-resources" facet="OnlineDisk/web/Web" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="OnlineDisk" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="lib" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jetbrains/annotations/17.0.0/annotations-17.0.0.jar" />
+          <element id="library" level="module" name="JUnit4" module-name="OnlineDisk" />
+        </element>
       </element>
+      <element id="javaee-facet-resources" facet="OnlineDisk/web/Web" />
     </root>
   </artifact>
 </component>

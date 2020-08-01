@@ -9,7 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Properties;
-import java.util.concurrent.CopyOnWriteArrayList;
+
 
 
 /**
@@ -74,7 +74,7 @@ public class DataConnectionPool  {
      * @param con:  mysql数据库连接对象
      * @return: void
      */
-    public static synchronized void connectionRecycle(@NotNull Connection con) {
+    public static void connectionRecycle(@NotNull Connection con) {
         synchronized (lock){
             connectionsPool.add(con);
         }
@@ -86,14 +86,14 @@ public class DataConnectionPool  {
      *
      * @return: java.sql.Connection
      */
-    public static synchronized Connection getConnection() {
-        synchronized (lock){
-            if(connectionsPool.size() == 0){
+    public static Connection getConnection() {
 
-                if(currentSize >= maxPoolSize){
-                    System.out.println("数据库连接池达到最大值");
-                    return null;
-                }else {
+        if(connectionsPool.size() == 0){
+            if(currentSize >= maxPoolSize){
+                System.out.println("数据库连接池达到最大值等待");
+                return null;
+            }else {
+                synchronized (lock){
                     for (int i = 0; i < step; i++) {
                         Connection connection = null;
                         try {
@@ -106,8 +106,8 @@ public class DataConnectionPool  {
                     }
                 }
             }
-            return connectionsPool.removeLast();
         }
+        return connectionsPool.removeLast();
     }
 
 }

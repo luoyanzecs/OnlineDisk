@@ -2,6 +2,8 @@ package cn.team.onlinedisk.service;
 
 import cn.team.onlinedisk.domain.User;
 
+import java.util.List;
+
 public interface UserService {
 
     /**
@@ -10,7 +12,15 @@ public interface UserService {
      * @param user: 用户信息类
      * @return: java.lang.Boolean
      */
-    Boolean register(User user);
+    boolean register(User user);
+
+    /**
+     *
+     *
+     * @param list: 用户集合
+     * @return: int 返回注册成功的数量
+     */
+    int register(List<User> list);
 
     /**
      * 用户登陆功能
@@ -20,7 +30,7 @@ public interface UserService {
      * @param user: 用户信息类
      * @return: java.lang.Boolean
      */
-    Boolean login(User user);
+    boolean login(User user);
 
     /**
      * 修改用户信息
@@ -28,5 +38,5 @@ public interface UserService {
      * @param user: 用户信息类
      * @return: java.lang.Boolean
      */
-    Boolean modify(User user);
+    boolean modify(User user);
 }

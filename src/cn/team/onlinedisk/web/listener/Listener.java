@@ -5,12 +5,12 @@ import cn.team.onlinedisk.utils.cache.CacheUtils;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @WebListener
 public class Listener implements ServletContextListener{
 
-    private boolean flagUser = true;
-    private boolean flagFile = true;
     // Public constructor is required by servlet spec
     public Listener() {
     }
@@ -42,29 +42,22 @@ public class Listener implements ServletContextListener{
          * 创建线程来监督缓存的大小;
          */
 
-        new Thread(()->{
-            System.out.println("文件缓存监督线程启动");
-            while(flagFile){
-                try {
-                    Thread.sleep(1000*60*5);
-                    CacheUtils.timingCheckFile();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                CacheUtils.timingCheckFile();
             }
-        }).start();
+        }, 1000*60*5, 1000*60*5);
 
-        new Thread(()->{
-            System.out.println("用户缓存监督线程启动");
-            while(flagUser){
-                try {
-                    Thread.sleep(1000*60*5);
-                    CacheUtils.timingCheckUser();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                CacheUtils.timingCheckUser();
             }
-        }).start();
+        }, 1000*6*45,1000*60*5);
+        
+
     }
 
     public void contextDestroyed(ServletContextEvent sce) {
@@ -73,8 +66,6 @@ public class Listener implements ServletContextListener{
          Application Server shuts down.
       */
 
-      this.flagUser =false;
-      this.flagFile =false;
     }
 
 }

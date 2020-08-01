@@ -34,7 +34,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean isExist(String name) {
+    public boolean isExistUser(String name) {
         String md5Name = Encryption.md5(name);
         boolean flag = false;
         String sql = "select * from user_info where username = ? limit 1";
@@ -60,7 +60,7 @@ public class UserDaoImpl implements UserDao {
         String password = Encryption.md5(user.getPassword());
 
         boolean flag = false;
-        String sql = "select * from user_info where username = ? password = ? limit 1";
+        String sql = "select * from user_info where username = ? and password = ? limit 1";
         Connection conn = ConnectionPoolUtils.getConnection();
         PreparedStatement stat = null;
         ResultSet res = null;

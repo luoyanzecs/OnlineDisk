@@ -71,6 +71,30 @@ public class UserFileInfoDaoImpl implements UserFileInfoDao {
     }
 
     @Override
+    public int countFile(User user) {
+        String sql = "select count(*)as totalCount from " + Encryption.md5(user.getUsername()) + "_file";
+
+        Connection conn = ConnectionPoolUtils.getConnection();
+        Statement stat = null;
+        ResultSet res = null;
+        int count = 0;
+        try {
+            stat = conn.createStatement();
+            res = stat.executeQuery(sql);
+            if(res.next()) {
+                count =res.getInt("totalCount");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }finally {
+            ConnectionPoolUtils.close(stat, conn, res);
+            return count;
+        }
+
+    }
+
+    @Override
     public void deleteFile(List<UserFileInfo> list) {
         String sql = "delete from ? where filename = ?";
         Connection conn = ConnectionPoolUtils.getConnection();
@@ -108,7 +132,6 @@ public class UserFileInfoDaoImpl implements UserFileInfoDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            ConnectionPoolUtils.close(stat, conn, res);
             return res;
         }
     }

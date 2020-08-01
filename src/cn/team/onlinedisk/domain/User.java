@@ -20,6 +20,10 @@ public class User {
         this.tel = tel;
     }
 
+    public User(String username) {
+        this.username = username;
+    }
+
     public User() {
     }
 
@@ -31,6 +35,7 @@ public class User {
                 ", tel='" + tel + '\'' +
                 '}';
     }
+
 
     public String getUsername() {
         return username;

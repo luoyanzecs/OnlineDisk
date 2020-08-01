@@ -38,15 +38,16 @@ public class BeanUtils<K>{
      * @param res:
      * @return: java.util.List<K>
      */
-    public List<K> pack(@NotNull ResultSet res){
+    public List<K> pack(ResultSet res){
         String[] heads = null;
         List<K> returnList = new ArrayList<>();
+
         try {
             ResultSetMetaData metaData = res.getMetaData();
             int count = metaData.getColumnCount();
-            heads = new String[count];
+            heads = new String[count + 1];
 
-            for (int i = 0; i < count; i++) {
+            for (int i = 1; i <= count; i++) {
                 String setterName = metaData.getColumnName(i);
                 char[] chars = setterName.toCharArray();
                 chars[0] -= 32;
@@ -55,11 +56,11 @@ public class BeanUtils<K>{
             }
             while(res.next()){
                 Object o = cls.getConstructor().newInstance();
-                for (int i = 0; i < count; i++) {
+                for (int i = 1; i <= count; i++) {
                     Method[] methods = cls.getMethods();
                     Method executeMethod = null;
                     for (Method method : methods) {
-                        if (method.getName() == heads[i]){
+                        if (method.getName().equals(heads[i])){
                             executeMethod = method;
                             break;
                         }
