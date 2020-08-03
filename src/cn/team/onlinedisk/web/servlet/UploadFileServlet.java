@@ -5,8 +5,6 @@ import cn.team.onlinedisk.domain.User;
 import cn.team.onlinedisk.domain.UserFileInfo;
 import cn.team.onlinedisk.service.UserFileInfoService;
 import cn.team.onlinedisk.service.impl.UserFileInfoServiceImpl;
-import cn.team.onlinedisk.utils.cache.CacheNewUtils;
-import cn.team.onlinedisk.utils.cache.CacheUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -33,7 +31,6 @@ public class UploadFileServlet extends HttpServlet {
             //如果想只用文件上传的功能的话把这个注释打开
             //String goalPath = CacheNewUtils.DIR_PATH + File.separator + filename;
             //this.copyFile(path, goalPath);
-
             response.getWriter().write("上传成功");
         }else {
             response.getWriter().write("上传失败");
