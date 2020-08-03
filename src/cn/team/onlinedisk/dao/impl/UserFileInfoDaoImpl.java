@@ -1,6 +1,7 @@
 package cn.team.onlinedisk.dao.impl;
 
 import cn.team.onlinedisk.dao.UserFileInfoDao;
+import cn.team.onlinedisk.domain.FileInfo;
 import cn.team.onlinedisk.domain.User;
 import cn.team.onlinedisk.domain.UserFileInfo;
 import cn.team.onlinedisk.utils.md5.Encryption;
@@ -27,7 +28,7 @@ public class UserFileInfoDaoImpl implements UserFileInfoDao {
         if("all".equals(fileName)){
             sql = "select * from " + Encryption.md5(user.getUsername()) + "_file";
         }else {
-            sql = "select * from "+ Encryption.md5(user.getUsername()) + "_file" + "where filename = " + fileName;
+            sql = "select * from "+ Encryption.md5(user.getUsername()) + "_file" + " where filename = " + fileName;
         }
 
         Connection conn = ConnectionPoolUtils.getConnection();
@@ -39,26 +40,25 @@ public class UserFileInfoDaoImpl implements UserFileInfoDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            ConnectionPoolUtils.close(stat, conn, res);
             return res;
         }
     }
 
     @Override
     public int addNewFile(UserFileInfo usi) {
-        String sql = "insert into ? values (?, ?)";
+        String sql = "insert into # values (?, ?)";
 
         Connection conn = ConnectionPoolUtils.getConnection();
         PreparedStatement stat = null;
         ResultSet res = null;
         int i = 0;
 
+        sql = sql.replaceAll("#", Encryption.md5(usi.getUsername()) + "_file");
         try {
             conn.setAutoCommit(false);
             stat = conn.prepareStatement(sql);
-            stat.setString(1,Encryption.md5(usi.getUsername()) + "_file");
-            stat.setString(2, usi.getFilename());
-            stat.setString(3, Encryption.md5(usi.getFilename()));
+            stat.setString(1, usi.getFilename());
+            stat.setString(2, Encryption.md5(usi.getFilename()));
             i = stat.executeUpdate();
             conn.commit();
         } catch (SQLException e) {
@@ -95,18 +95,19 @@ public class UserFileInfoDaoImpl implements UserFileInfoDao {
     }
 
     @Override
-    public void deleteFile(List<UserFileInfo> list) {
-        String sql = "delete from ? where filename = ?";
+    public void deleteFile(String[] filenames ,User user) {
+        String sql = "delete from # where filename = ?";
+        sql = sql.replaceAll("#", Encryption.md5(user.getUsername()) + "_file");
         Connection conn = ConnectionPoolUtils.getConnection();
         PreparedStatement stat = null;
         ResultSet res = null;
+        int length = filenames.length;
 
-        for (UserFileInfo usi : list) {
+        for (int i = 0; i < length; i++) {
             try {
                 conn.setAutoCommit(false);
                 stat = conn.prepareStatement(sql);
-                stat.setString(1,Encryption.md5(usi.getUsername()) + "_file");
-                stat.setString(2, usi.getFilename());
+                stat.setString(1, filenames[i]);
                 stat.executeUpdate();
                 conn.commit();
             } catch (SQLException e) {

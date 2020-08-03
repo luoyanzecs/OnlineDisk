@@ -13,11 +13,18 @@ public interface UserFileInfoService {
     /**
      * 保存用户上传的文件: 只需将文件的名称加入数据库即可;
      *
-     * @param usi: 用户文件信息类
-     * @param file:  用户上传的文件;
-     * @return: java.lang.Boolean
+     * @param ufi: 用户文件信息类
+     * @return: void
      */
-    Boolean saveFile(UserFileInfo usi , File file);
+    void saveFile(UserFileInfo ufi);
+
+    /**
+     * 获取一个可用的文件名
+     *
+     * @param usi:
+     */
+    String getAvailPath(UserFileInfo usi);
+
 
     int countAllFiles(User user);
 
@@ -29,5 +36,41 @@ public interface UserFileInfoService {
      */
     List<FileInfo> findAllFiles(User user);
 
+    /**
+     * 在数据库中分页查找
+     *
+     * @param user:
+     * @param start: 开始索引
+     * @param sum:  每页的数量
+     * @return: java.util.List<cn.team.onlinedisk.domain.FileInfo>
+     */
     List<FileInfo> findFileByPages(User user, int start, int sum);
+
+    /**
+     * 在cache中分页查找；
+     *
+     * @param user:
+     * @param start: 开始索引
+     * @param sum:  每页的数量
+     * @return: java.util.List<cn.team.onlinedisk.domain.FileInfo>
+     */
+    List<FileInfo> findFileByPagesInCache(User user, int start, int sum);
+
+    /**
+     * 获取文件路径名
+     *
+     * @param filename:
+     * @param user:
+     * @return: java.lang.String
+     */
+    String getFilePath(String filename, User user);
+
+    /**
+     * 删除文件
+     *
+     * @param filenames:
+     * @param user:
+     * @return: void
+     */
+    void deleteFile(String[] filenames, User user);
 }

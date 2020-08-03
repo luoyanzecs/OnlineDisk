@@ -1,5 +1,7 @@
 package cn.team.onlinedisk.domain;
 
+import java.util.Objects;
+
 /**
  * @ClassName User
  * @Description 用户信息{@code username password tel}
@@ -36,6 +38,10 @@ public class User {
                 '}';
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(username);
+    }
 
     public String getUsername() {
         return username;

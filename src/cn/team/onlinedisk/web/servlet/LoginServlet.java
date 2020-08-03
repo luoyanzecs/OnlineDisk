@@ -2,6 +2,7 @@ package cn.team.onlinedisk.web.servlet;
 
 import cn.team.onlinedisk.domain.User;
 import cn.team.onlinedisk.service.impl.UserServiceImpl;
+import cn.team.onlinedisk.service.thread.CacheInitThread;
 import cn.team.onlinedisk.utils.bean.BeanUtils;
 
 import javax.servlet.ServletException;
@@ -28,6 +29,7 @@ public class LoginServlet extends HttpServlet {
         boolean login = usi.login(user);
         if (login){
             request.getRequestDispatcher("/loginSuccess.jsp").forward(request, response);
+            new Thread(new CacheInitThread(user)).start();
         }else{
             request.getRequestDispatcher("/login.jsp").forward(request, response);
         }

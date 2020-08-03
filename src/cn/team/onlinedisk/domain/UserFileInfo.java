@@ -1,5 +1,8 @@
 package cn.team.onlinedisk.domain;
 
+import cn.team.onlinedisk.service.UserFileInfoService;
+import cn.team.onlinedisk.service.impl.UserFileInfoServiceImpl;
+
 import java.io.File;
 
 /**
@@ -16,10 +19,29 @@ public class UserFileInfo {
     private String filename;
     private File file;
 
-    public UserFileInfo(String username, String filename) {
+    public UserFileInfo(User user, String filename) {
+        UserFileInfoServiceImpl userFileInfoService = new UserFileInfoServiceImpl();
+        String filePath = userFileInfoService.getFilePath(filename, user);
+        File file = new File(filePath);
+        int count = 1;
+        while (file.exists()){
+            filename = count == 1 ?
+                    filename.replaceAll("[.]", "(" + (count++) + ").")
+                    :filename.replaceAll("[(][0-9][)][.]", "(" + (count++) + ").");
+            filePath = userFileInfoService.getFilePath(filename, user);
+            file = new File(filePath);
+        }
+        this.username = user.getUsername();
+        this.filename = filename;
+        this.file = file;
+    }
+
+    public UserFileInfo(String username, String filename, File file) {
         this.username = username;
         this.filename = filename;
+        this .file = file;
     }
+
 
     public UserFileInfo() {
     }

@@ -18,17 +18,22 @@ import java.util.List;
  * 查询所有的文件内容
  *
  */
-@WebServlet("/selectAll")
-public class SelectAllServlet extends HttpServlet {
+@WebServlet("/select")
+public class SelectServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         User user = (User)session.getAttribute("user_msg");
         UserFileInfoService usis = new UserFileInfoServiceImpl();
-        int fileCount = usis.countAllFiles(user);
-        int pageSum = fileCount/10 + 1;
-        int currentPage = 1;
-        List<FileInfo> fileByPages = usis.findFileByPages(user, 0, 10);
-        System.out.println(fileByPages);
+        String totalPage = request.getParameter("totalPage");
+        int pageSum = (totalPage == null) ? usis.countAllFiles(user) : Integer.parseInt(totalPage);
+        int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+        int start = (currentPage - 1) * 10;
+        //现在cache中查找
+        List<FileInfo> fileByPages = usis.findFileByPagesInCache(user, start, 10);
+        //若cache中没有则去数据库中查找
+        if (fileByPages == null){
+            fileByPages = usis.findFileByPages(user, start, 10);
+        }
         request.setAttribute("users", user);
         request.setAttribute("fileList", fileByPages);
         request.setAttribute("currentPage", currentPage);

@@ -1,5 +1,6 @@
 package cn.team.onlinedisk.web.listener;
 
+import cn.team.onlinedisk.utils.cache.CacheNewUtils;
 import cn.team.onlinedisk.utils.cache.CacheUtils;
 
 import javax.servlet.ServletContextEvent;
@@ -31,7 +32,19 @@ public class Listener implements ServletContextListener{
             Class.forName("cn.team.onlinedisk.utils.pool.DataConnectionPool");
             System.out.println("数据库连接池初始化成功");
 
-            Class.forName("cn.team.onlinedisk.utils.cache.CacheUtils");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Class.forName("cn.team.onlinedisk.utils.cache.CacheNewUtils");
+            System.out.println("缓存初始化成功");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Class.forName("cn.team.onlinedisk.utils.cache.CacheDataArray");
             System.out.println("缓存初始化成功");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -46,16 +59,11 @@ public class Listener implements ServletContextListener{
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                CacheUtils.timingCheckFile();
+                System.out.println("启动线程监视缓存");
+                CacheNewUtils.monitorCache();
             }
-        }, 1000*60*5, 1000*60*5);
+        }, 0, 1000*60*10);
 
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                CacheUtils.timingCheckUser();
-            }
-        }, 1000*6*45,1000*60*5);
         
 
     }

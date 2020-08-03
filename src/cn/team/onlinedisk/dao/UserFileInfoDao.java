@@ -1,5 +1,6 @@
 package cn.team.onlinedisk.dao;
 
+import cn.team.onlinedisk.domain.FileInfo;
 import cn.team.onlinedisk.domain.User;
 import cn.team.onlinedisk.domain.UserFileInfo;
 import org.jetbrains.annotations.NotNull;
@@ -37,10 +38,10 @@ public interface UserFileInfoDao {
     /**
      * 删除用户文件；
      *
-     * @param list:  用于存储的待删除的列表
+     * @param filenames:  用于存储的待删除的列表
      * @return: void
      */
-    void deleteFile(List<UserFileInfo> list);
+    void deleteFile(String[] filenames , User user);
 
     /**
      * 分页 查询 user 表返回一个Result集合。

@@ -43,6 +43,21 @@
                         elementsByName[i].checked = this.checked;
                     }
                 });
+
+                $.post("upload", {username:value}, function (data) {
+                    if (data.isExsit){
+                        $("#pName").removeClass().addClass("remind-err");
+                        $("#pName").addClass("glyphicon glyphicon-remove");
+                        $("#pName").text(data.msg);
+                    }else{
+                        console.log(data.msg);
+                        $("#pName").text("");
+                        $("#pName").removeClass();
+                        $("#pName").addClass("glyphicon glyphicon-ok");
+                        $("#pName").addClass("remind-corr");
+                    }
+
+                }, "json");
             })
         </script>
 
@@ -111,9 +126,23 @@
             }
 
             .span-li{
-                padding-top: 4px;
-                border-radius: 100%;
+                padding-top: 3px;
+                border-radius: 15%;
                 background-color: rgb(215,55,62);
+                width: 30px;
+                height: 30px;
+                margin: 5px;
+                text-align: center;
+                list-style-type:none;
+                float: left;
+                font-size: 20px;
+                color: white;
+            }
+
+            .a-color{
+                padding-top: 3px;
+                border-radius: 15%;
+                background-color: rgb(5,22,38);
                 width: 30px;
                 height: 30px;
                 margin: 5px;
@@ -166,14 +195,22 @@
 
         <div id = "div-center">
             <div class="btn-group"  >
-                <button type="button" onclick="window.location.href='${pageContext.request.contextPath}/selectAll'" class="btn-comm" id="btn-look"><span class="glyphicon glyphicon-search"></span></button>
-                <button type="button"  class="btn-comm" id="btn-upload"><span class="glyphicon glyphicon glyphicon-upload"></span></button>
+                <button type="button" onclick="window.location.href='${pageContext.request.contextPath}/select?currentPage=1&rows=10'" class="btn-comm" id="btn-look">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+                <%--${pageContext.request.contextPath}/download--%>
+                <form action="${pageContext.request.contextPath}/upload" id="form-file"  enctype="multipart/form-data" method="post" target="_blank">
+                    <input type="file" id="inputFile" name = "file">
+                    <button type="submit" class="btn-comm" id="btn-upload">
+                        <span class="glyphicon glyphicon glyphicon-upload"></span>
+                    </button>
+                </form>
                 <%--<button type="button"  class="btn-comm" id="btn-mod"><span class="glyphicon glyphicon-pencil"></span></button>--%>
             </div>
             <br>
             <br>
             <div id = "div-table">
-                <form action="${pageContext.request.contextPath}/deleteFile" method="get" id="form-table">
+                <form action="${pageContext.request.contextPath}/deleteFile?currentPage=${currentPage}&rows=10" method="post" id="form-table">
                     <table width="100%">
                         <tr>
                             <th width="10%"><input type="checkbox" id="firstCheckbox"></th>
@@ -189,8 +226,12 @@
                                 <td>${f.count}</td>
                                 <td>${file.filename}</td>
                                 <td>
-                                    <a href="#"><span class="glyphicon glyphicon-trash span-li-right"></span></a>
-                                    <a href="#"><span class="glyphicon glyphicon-download-alt span-li-right"></span></a>
+                                    <a href="${pageContext.request.contextPath}/deleteFile?currentPage=${currentPage}&rows=10&filename=${file.filename} ">
+                                        <span class="glyphicon glyphicon-trash span-li-right"></span>
+                                    </a>
+                                    <a href="${pageContext.request.contextPath}/download?filename=${file.filename}">
+                                        <span class="glyphicon glyphicon-download-alt span-li-right"></span>
+                                    </a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -218,22 +259,22 @@
 
                 <%--传入对象size 里面存折当前页面的文件个数--%>
                 <c:forEach begin="1" end="${totalPage}" var="i">
-                    <c:if test="${totalPage == i}">
-                        <span class="span-li"><a class="active" href="${pageContext.request.contextPath}/searchPage?page=${i}&rows=10">${i}</a></span>
+                    <c:if test="${currentPage == i}">
+                        <span class="a-color">${i}</span>
                     </c:if>
-                    <c:if test="${totalPage != i}">
-                        <span class="span-li"><a href="${pageContext.request.contextPath}/searchPage?page=${i}&rows=10">${i}</a></span>
+                    <c:if test="${currentPage != i}">
+                        <span class="span-li"><a href="${pageContext.request.contextPath}/select?currentPage=${i}&rows=10">${i}</a></span>
                     </c:if>
                 </c:forEach>
 
 
 
-                <c:if test="${currentPage != maxPage }">
+                <c:if test="${currentPage != totalPage }">
                     <a href="${pageContext.request.contextPath}/searchPage?page=${currentPage+1}&rows=10" >
                         <span class="glyphicon glyphicon-chevron-right span-li"></span>
                     </a>
                 </c:if>
-                <c:if test="${currentPage == maxPage }">
+                <c:if test="${currentPage == totalPage }">
                     <span class="glyphicon glyphicon-chevron-right  span-li"></span>
                     </a>
                 </c:if>

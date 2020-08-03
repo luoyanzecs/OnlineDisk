@@ -88,8 +88,15 @@ public class BeanUtils<K>{
      * @return: java.util.List<K>
      */
     public List<K> pack(@NotNull Map< ? extends String, ? extends String[]> map){
-        Iterator<? extends Map.Entry<? extends String, ? extends String[]>> iterator = map.entrySet().iterator();
-        int count = iterator.next().getValue().length;
+//        Iterator<? extends Map.Entry<? extends String, ? extends String[]>> iterator = map.entrySet().iterator();
+//        int count = iterator.next().getValue().length;
+        int count = 0;
+        for (Map.Entry<? extends String, ? extends String[]> entry : map.entrySet()) {
+            String[] value = entry.getValue();
+            count = value.length;
+            break;
+        }
+
 
         ArrayList<K> arrayList = new ArrayList<>();
         try {

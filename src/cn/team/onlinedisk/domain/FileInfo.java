@@ -16,6 +16,19 @@ public class FileInfo {
     public FileInfo() {
     }
 
+    public FileInfo(String filename, String filename_encryption) {
+        this.filename = filename;
+        this.filename_encryption = filename_encryption;
+    }
+
+    @Override
+    public String toString() {
+        return "FileInfo{" +
+                "filename='" + filename + '\'' +
+                ", filename_encryption='" + filename_encryption + '\'' +
+                '}';
+    }
+
     public String getFilename() {
         return filename;
     }

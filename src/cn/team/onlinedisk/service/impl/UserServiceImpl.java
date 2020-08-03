@@ -22,6 +22,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean register(User user) {
         UserDaoImpl userDao = new UserDaoImpl();
+        UserFileInfoDao ufiDao = new UserFileInfoDaoImpl();
+        ufiDao.creatTable(user);
+        System.out.println(user.getUsername() + "注册成功");
         return userDao.addNewUser(user);
     }
 

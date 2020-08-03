@@ -107,7 +107,7 @@
             <p></p>
         </div>
         <div >
-            <form action="${pageContext.request.contextPath}/login" id = "form-all" onsubmit="check()" method="post">
+            <form action="${pageContext.request.contextPath}/login" id = "form-all"  method="post">
                 <div class="form-group">
                     <label for="inputName">用户名</label>
                     <input type="text" class="form-control" id="inputName" placeholder="Username" name="username" required value="${users.username}">

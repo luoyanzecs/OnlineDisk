@@ -4,6 +4,7 @@ import cn.team.onlinedisk.dao.impl.UserFileInfoDaoImpl;
 import cn.team.onlinedisk.domain.FileInfo;
 import cn.team.onlinedisk.domain.User;
 import cn.team.onlinedisk.utils.bean.BeanUtils;
+import cn.team.onlinedisk.utils.cache.CacheNewUtils;
 import cn.team.onlinedisk.utils.cache.CacheUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,22 +21,17 @@ import java.util.List;
  */
 
 
-public class CacheFileInfoThread implements Runnable {
+public class CacheInitThread implements Runnable {
 
     private User user;
 
-    public CacheFileInfoThread(@NotNull User user) {
+    public CacheInitThread(@NotNull User user) {
         this.user = user;
     }
 
     @Override
     public void run() {
-        /**
-         * TODO 未测试res内没有查询结果时运行是否正确
-         */
-        ResultSet res = new UserFileInfoDaoImpl().query(this.user, "all");
-        List<FileInfo> fileInfoList = new BeanUtils<FileInfo>(FileInfo.class).pack(res);
-        CacheUtils.initFile(fileInfoList, this.user);
+        CacheNewUtils.addFileMap(user);
     }
 }
 

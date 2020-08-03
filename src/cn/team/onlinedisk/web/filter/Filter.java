@@ -5,7 +5,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@WebFilter(value = "*.jsp",dispatcherTypes = DispatcherType.REQUEST)
+//@WebFilter(value = "*.jsp",dispatcherTypes = DispatcherType.REQUEST)
 public class Filter implements javax.servlet.Filter {
     public void destroy() {
     }

@@ -32,6 +32,7 @@ public class RegisterCheckServlet extends HttpServlet {
             map.put("msg", "该名称未被占用");
         }
 
+
         //将map转为json,并且传递给客户端
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(response.getWriter(), map);

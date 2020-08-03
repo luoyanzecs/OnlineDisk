@@ -139,6 +139,7 @@ public class UserDaoImpl implements UserDao {
                 }
             }
             e.printStackTrace();
+            return false;
         }finally {
                 ConnectionPoolUtils.close(stat,conn);
         }
