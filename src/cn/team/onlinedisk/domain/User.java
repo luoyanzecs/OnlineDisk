@@ -15,6 +15,11 @@ public class User {
     private String username;
     private String password;
     private String tel;
+    /*
+    TODO:
+    please complete this field
+     */
+    private String sex;
 
     public User(String username, String password, String tel) {
         this.username = username;
